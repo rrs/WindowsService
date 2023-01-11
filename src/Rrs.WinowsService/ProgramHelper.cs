@@ -1,40 +1,35 @@
 ﻿using System;
-using System.ServiceProcess;
 
-namespace Rrs.WinowsService
+namespace Rrs.WinowsService;
+
+public static class ProgramHelper
 {
-    public static class ProgramHelper
+    public static bool ManageService(string[] args, WindowsServiceConfiguration config)
     {
-        public static int Run(ServiceBase service, string[] args, string serviceDisplayName = null, string serviceDescription = null)
+        try
         {
-            try
+            if (args.Length > 0)
             {
-                if (args.Length > 0)
+                switch (args[0])
                 {
-                    if (args[0] == "--service")
-                    {
-                        ServiceBase.Run(new ServiceBase[]
-                        {
-                            service
-                        });
-                    }
-                    else
-                    {
-                        ConsoleHelper.Run(service.ServiceName, args, serviceDisplayName, serviceDescription);
-                    }
+                    case "-i" or "-install":
+                        WindowsServiceInstaller.Install(config);
+                        return true;
+                    case "-u" or "-uninstall":
+                        WindowsServiceInstaller.Uninstall(config);
+                        return true;
+                    default: return false;
                 }
-                else
-                {
-                    Console.WriteLine("install with\t-i");
-                    Console.WriteLine("uninstall with\t-u");
-                }
-                return 0;
             }
-            catch (Exception ex)
+            else
             {
-                Console.Error.WriteLine(ex.Message);
-                return -1;
+                return false;
             }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+            return true;
         }
     }
 }

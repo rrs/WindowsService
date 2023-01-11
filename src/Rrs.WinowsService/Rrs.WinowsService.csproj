@@ -1,14 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <LangVersion>default</LangVersion>
     <Description>Rrs.WinowsService Class Library</Description>
     <Authors>Robert Snipe</Authors>
     <Copyright>Copyright (c) 2018 Robert Snipe</Copyright>
-    <TargetFrameworks>net40</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <AssemblyName>Rrs.WinowsService</AssemblyName>
     <PackageId>Rrs.WinowsService</PackageId>
     <PackageTags>WinowsService;Net40</PackageTags>
     <PackageProjectUrl>https://github.com/rrs/WinowsService</PackageProjectUrl>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company>rrs</Company>
   </PropertyGroup>
@@ -18,8 +19,8 @@
     <None Remove="content\**" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Configuration.Install" />
-    <Reference Include="System.ServiceProcess" />
+    <PackageReference Include="Core.System.Configuration.Install" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
