@@ -19,7 +19,7 @@ public class WindowsServiceInstaller
             ) else (
                 echo Service is installed
                 echo Stopping service...
-                sc.exe stop "{config.Name}"
+                sc.exe stop "{config.Name}" > NUL
                 sc.exe delete "{config.Name}"
             )
             
@@ -27,7 +27,7 @@ public class WindowsServiceInstaller
             sc.exe create "{config.Name}" binpath= "{path}" start= auto displayname= "{config.DisplayName}"
             sc.exe description "{config.Name}" "{config.Description}"
             echo Starting service...
-            sc.exe start "{config.Name}"
+            sc.exe start "{config.Name}" > NUL
             """;
 
         RunCommand(command);
@@ -44,7 +44,7 @@ public class WindowsServiceInstaller
             ) else (
                 echo Service is installed
                 echo Stopping service...
-                sc.exe stop "{config.Name}"
+                sc.exe stop "{config.Name}" > NUL
                 sc.exe delete "{config.Name}"
             )
             """;
@@ -74,6 +74,7 @@ public class WindowsServiceInstaller
         };
         process.Start();
         process.BeginOutputReadLine();
+
         using var sw = process.StandardInput;
 
         if (sw.BaseStream.CanWrite)
@@ -85,6 +86,14 @@ public class WindowsServiceInstaller
         sw.Close();
 
         process.WaitForExit();
-        File.Delete(batFile);
+
+        try
+        {
+            File.Delete(batFile);
+        }
+        catch(Exception e)
+        {
+            Console.Error.WriteLine($"Could not delete bat file '{batFile}'. Exception: {e.Message}");
+        }
     }
 }

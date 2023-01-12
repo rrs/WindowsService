@@ -4,6 +4,12 @@ namespace Rrs.WinowsService;
 
 public static class ProgramHelper
 {
+    /// <summary>
+    /// Will install or uninstall depending on command line args. 
+    /// </summary>
+    /// <param name="args">command line args</param>
+    /// <param name="config">config for the service</param>
+    /// <returns>true if the service has been 'managed' </returns>
     public static bool ManageService(string[] args, WindowsServiceConfiguration config)
     {
         try
@@ -26,9 +32,9 @@ public static class ProgramHelper
                 return false;
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.Error.WriteLine(ex.Message);
+            Console.Error.WriteLine(e.Message);
             return true;
         }
     }
