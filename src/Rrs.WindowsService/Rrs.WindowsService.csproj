@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <Version>2.0.0</Version>
     <LangVersion>default</LangVersion>
     <Description>Rrs.WinowsService Class Library</Description>
     <Authors>Robert Snipe</Authors>
@@ -9,7 +10,6 @@
     <PackageId>Rrs.WinowsService</PackageId>
     <PackageTags>WinowsService;Net40</PackageTags>
     <PackageProjectUrl>https://github.com/rrs/WinowsService</PackageProjectUrl>
-    <Version>2.0.0</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Company>rrs</Company>
     <Nullable>enable</Nullable>
