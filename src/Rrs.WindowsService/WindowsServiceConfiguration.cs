@@ -1,3 +1,3 @@
 ﻿namespace Rrs.WinowsService;
 
-public record WindowsServiceConfiguration(string Name, string DisplayName, string Description);
+public record WindowsServiceConfiguration(string Name, string DisplayName, string Description, string? OldName = null);
