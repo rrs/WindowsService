@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Rrs.WinowsService;
+namespace Rrs.WindowsService;
 
 public static class ProgramHelper
 {

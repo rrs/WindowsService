@@ -3,9 +3,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace Rrs.WinowsService;
+namespace Rrs.WindowsService;
 
-public class WindowsServiceInstaller
+public static class WindowsServiceInstaller
 {
     public static void Install(WindowsServiceConfiguration config)
     {
@@ -24,13 +24,36 @@ public class WindowsServiceInstaller
             )
             
             echo Installing service...
-            sc.exe create "{config.Name}" binpath= "{path}" start= auto displayname= "{config.DisplayName}"
+            sc.exe create "{config.Name}" binpath= "{path}" start= {StartModeString(config.StartMode)} displayname= "{config.DisplayName}"
             sc.exe description "{config.Name}" "{config.Description}"
+            {GenerateRecoveryOptions(config)}
             echo Starting service...
             sc.exe start "{config.Name}" > NUL
             """;
 
         RunCommand(command);
+    }
+
+    private static string StartModeString(StartMode startMode) => startMode switch
+    {
+        StartMode.Auto => "auto",
+        StartMode.AutoDelayed => "delayed-auto",
+        _ => throw new Exception("Can't convert StartMode to string, Unhandled StartMode")
+    };
+
+    public static string GenerateRecoveryOptions(WindowsServiceConfiguration config) => config.RecoveryOptions == null ? "" :
+        $"""
+        sc failure "{config.Name}" reset= {config.RecoveryOptions.Reset} actions= {GenerateResetString(config.RecoveryOptions)}
+        """;
+
+    public static string GenerateResetString(RecoveryOptions recoveryOptions)
+    {
+        if (recoveryOptions.FirstFailure == null) return @""""; // ""
+        if (recoveryOptions.SecondFailure == null) return $"{Part(recoveryOptions.FirstFailure)}//";
+
+        return $"{Part(recoveryOptions.FirstFailure)}{Part(recoveryOptions.SecondFailure)}{Part(recoveryOptions.SubsequentFailures)}";
+
+        static string Part(int? value) => value == null ? "/" : $"restart/{value}/";
     }
 
     public static void Uninstall(WindowsServiceConfiguration config)
